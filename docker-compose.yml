@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  ip-lookup:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: 3767eb0eb281
+    ports:
+      - "3000:3000"
+    environment:
+      - ACCESS_TOKEN=${ACCESS_TOKEN}
+    restart: unless-stopped
+    # Note: Healthcheck is not included because the scratch container
+    # doesn't have any utilities like wget or curl
