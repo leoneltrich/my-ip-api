@@ -13,21 +13,16 @@ use axum::{
 use std::env;
 use std::time::Duration;
 
-pub(crate) async fn auth_middleware(req: Request, next: Next) -> Result<Response, StatusCode> {
+pub(crate) async fn auth_middleware(request: Request, next: Next) -> Result<Response, StatusCode> {
     tokio::time::sleep(Duration::from_secs(1)).await;
 
     // Load expected token from env
-    let expected_token = env::var("ACCESS_TOKEN").map_err(|_| { 
-        println!("Access token not found in environment");
-        StatusCode::INTERNAL_SERVER_ERROR 
-    })?;
+    let expected_token = get_token()?;
 
     // Extract the Authorization header
-    let headers = req.headers();
+    let headers = request.headers();
     let token = extract_bearer_token(headers).ok_or(StatusCode::UNAUTHORIZED)?;
-
-    println!("Expected {}", expected_token);
-
+    
     // Check if the token matches
     let parsed_hash = PasswordHash::new(&expected_token).map_err(|e| {
         println!("Failed to parse password hash: {}", e);
@@ -40,7 +35,15 @@ pub(crate) async fn auth_middleware(req: Request, next: Next) -> Result<Response
     }
     
     println!("Access token valid");
-    Ok(next.run(req).await)
+    Ok(next.run(request).await)
+}
+
+fn get_token() -> Result<String, StatusCode> {
+    let expected_token = env::var("ACCESS_TOKEN").map_err(|_| {
+        println!("Access token not found in environment");
+        StatusCode::INTERNAL_SERVER_ERROR
+    })?;
+    Ok(expected_token)
 }
 
 fn extract_bearer_token(headers: &HeaderMap) -> Option<String> {
