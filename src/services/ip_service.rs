@@ -1,14 +1,7 @@
 use std::net::IpAddr;
 use axum::Json;
 use reqwest::{Client, Error, Response};
-use serde::Serialize;
-
-#[derive(Serialize, Debug)]
-pub struct IpResponse {
-    ipv4: Option<String>,
-    ipv6: Option<String>,
-}
-
+use crate::models::ip_response::IpResponse;
 
 pub async fn get_current_ip() -> Json<IpResponse> {
     println!("Getting current IP");

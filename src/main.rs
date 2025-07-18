@@ -3,6 +3,7 @@ use std::env;
 
 mod controllers;
 mod services;
+mod models;
 
 #[tokio::main]
 async fn main() {
