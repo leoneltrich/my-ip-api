@@ -5,11 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: 3767eb0eb281
     ports:
-      - "3000:3000"
+      - "3000:3000" # map to same port as set in PORT env variable, leave at 3000 for default
     environment:
       - ACCESS_TOKEN=${ACCESS_TOKEN}
+      - PORT=3000
     restart: unless-stopped
     # Note: Healthcheck is not included because the scratch container
     # doesn't have any utilities like wget or curl
