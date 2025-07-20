@@ -1,6 +1,6 @@
 # IP Lookup Service
 
-A simple Rust-based API service that returns the IPv4 and IPv6 addresses of the machine it is running on. The service is built with Axum and Tokio, and includes Docker support for easy deployment.
+A simple Rust-based API service that returns the IPv4 and IPv6 addresses of the machine it is running on. The service is built with Axum and Tokio, and includes Docker support for easy deployment. For a use case of this look at the corresponding [blog post](https://blog.cloudsnap.cc/when-my-own-security-locked-me-out/).
 
 ## Features
 
